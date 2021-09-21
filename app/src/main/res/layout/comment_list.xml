@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/commentProfileImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_image_four_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/commentNameTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/commentProfileImage"
+        app:layout_constraintStart_toEndOf="@id/commentProfileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/userid"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="30dp"/>
+
+    <TextView
+        android:id="@+id/commentEmailTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/commentNameTxt"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@id/commentProfileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/email"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="30dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/commentCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/commentEmailTxt"
+        app:layout_constraintStart_toStartOf="@id/commentProfileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/light_blue">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/commentListTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/post_title"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/viewComment"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commentCard"
+        android:layout_marginTop="20dp"
+        android:background="@color/grey"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageButton
+        android:id="@+id/likeBtn_comment"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_outline_favorite_border_24"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewComment"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/postBtn_comment"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_chat"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="@id/likeBtn_comment"
+        app:layout_constraintBottom_toBottomOf="@id/likeBtn_comment"
+        app:layout_constraintStart_toEndOf="@id/likeBtn_comment"
+        android:layout_marginStart="30dp"/>
+
+    <ImageButton
+        android:id="@+id/shareBtn_comment"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_baseline_share_24"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="@id/likeBtn_comment"
+        app:layout_constraintBottom_toBottomOf="@id/likeBtn_comment"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
