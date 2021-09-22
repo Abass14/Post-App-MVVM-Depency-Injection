@@ -14,4 +14,6 @@
     <string name="post_title">Post title</string>
     <string name="userid">userId</string>
     <string name="email">email</string>
+    <string name="offline">No internet access, please turn on your Internet</string>
+    <string name="error">Error fetching data</string>
 </resources>

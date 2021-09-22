@@ -50,14 +50,15 @@
         android:id="@+id/searchBtn"
         android:layout_width="0dp"
         android:layout_height="35dp"
+        android:padding="3dp"
         app:layout_constraintStart_toEndOf="@id/tvMoments"
         app:layout_constraintTop_toTopOf="@id/tvMoments"
         app:layout_constraintBottom_toBottomOf="@id/tvMoments"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        style="@style/Widget.AppCompat.Light.SearchView"
         android:visibility="gone"
+        style="@style/Widget.AppCompat.Light.SearchView"
         android:background="@drawable/search_view_layout"/>
 
     <ImageButton
@@ -96,7 +97,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/momentsViewPager" />
 
+    <ProgressBar
+        android:id="@+id/homeProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/momentsViewPager"/>
+
+    <TextView
+        android:id="@+id/errorTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/momentsViewPager"
+        android:textColor="@color/red"/>
+
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/homeSwipeToRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/tvLatestPost"

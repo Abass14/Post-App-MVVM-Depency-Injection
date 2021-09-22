@@ -7,18 +7,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.SearchView
-import android.widget.Toast
-import android.widget.Toolbar
+import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.week_ten_task.R
 import com.example.week_ten_task.adapter.UserMomentAdapter
 import com.example.week_ten_task.adapter.UserPostAdapter
+import com.example.week_ten_task.connectivity.ConnectivityLiveData
 import com.example.week_ten_task.model.PostResponseItem
 import com.example.week_ten_task.model.UserMomentModel
 import com.example.week_ten_task.vm.AppViewModel
@@ -35,8 +35,12 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
     lateinit var postAdapter: UserPostAdapter
     lateinit var filterBtn: ImageButton
     lateinit var searchBtn: SearchView
+    lateinit var homeSwipeToRefreshLayout: SwipeRefreshLayout
+    lateinit var homeProgressBar: ProgressBar
+    lateinit var connectivityLiveData: ConnectivityLiveData
+    lateinit var errorTxt: TextView
 
-    private val viewmodel: AppViewModel by viewModels()
+    private val viewModel: AppViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +54,11 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         postRecyclerView = view.findViewById(R.id.postRecyclerView)
         filterBtn = view.findViewById(R.id.filterBtn)
         searchBtn = view.findViewById(R.id.searchBtn)
+        homeSwipeToRefreshLayout = view.findViewById(R.id.homeSwipeToRefreshLayout)
+        homeProgressBar = view.findViewById(R.id.homeProgressBar)
+        errorTxt = view.findViewById(R.id.errorTxt)
+
+        connectivityLiveData = ConnectivityLiveData(requireActivity().application)
 
         momentList = ArrayList()
         momentList()
@@ -63,23 +72,48 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         }
 
         searchBtn.setOnCloseListener {
-            val isClosed: Boolean
-            if (!searchBtn.isFocused){
-                searchBtn.visibility = View.GONE
-                filterBtn.visibility = View.VISIBLE
-                isClosed = true
-            }else{
-                searchBtn.visibility = View.VISIBLE
-                filterBtn.visibility = View.GONE
-                isClosed = false
-            }
-            return@setOnCloseListener isClosed
+            searchViewOpenClose()
         }
+
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                requireActivity().finishAffinity()
+                requireActivity().finish()
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
+        searchBtn.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                searchBtn.clearFocus()
+                if (p0 != null) {
+                    search(p0)
+                }
+                return false
+            }
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if (p0 != null) {
+                    search(p0)
+                }
+                return false
+            }
+
+        } )
 
         addPostBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_addPost2)
         }
         return view
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun search(searchTxt: String) {
+        UserPostAdapter.postList =  UserPostAdapter.postList.filter {
+            it.theTitle.contains(searchTxt, ignoreCase = false)
+        } as ArrayList<PostResponseItem>
+
+        postAdapter.notifyDataSetChanged()
+
     }
 
 
@@ -111,21 +145,55 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observeResponse(){
-        viewmodel.getPostList().observe(requireActivity(), Observer {
+        viewModel.getPostList().observe(requireActivity(), Observer {
+            homeProgressBar.visibility = View.GONE
             if (it != null){
                 UserPostAdapter.postList = it
                 postAdapter.notifyDataSetChanged()
-                Log.d("HomeFragment", "${UserPostAdapter.postList}")
-
+                homeProgressBar.visibility = View.GONE
+                Log.d("HomeFragment", "${UserPostAdapter.postList.size}")
             }else{
-                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                errorTxt.text = getString(R.string.error)
+                errorTxt.visibility = View.VISIBLE
+                homeProgressBar.visibility = View.GONE
             }
         })
-        viewmodel.getPostFromApi(requireContext())
+        //viewModel.getPostFromApi(requireContext())
+
+        connectivityLiveData.observe(viewLifecycleOwner, Observer {  isAvailable ->
+            homeProgressBar.visibility = View.GONE
+            when (isAvailable) {
+                true -> {
+                    homeProgressBar.visibility = View.VISIBLE
+                    viewModel.getPostFromApi(requireContext())
+                    errorTxt.visibility = View.GONE
+                }
+                false -> {
+                    errorTxt.text = getString(R.string.offline)
+                    errorTxt.visibility = View.VISIBLE
+                    homeProgressBar.visibility = View.GONE
+                }
+            }
+        })
     }
 
     companion object{
         fun instance() = HomeFragment()
+    }
+
+    private fun searchViewOpenClose() : Boolean{
+        val isClosed: Boolean
+        if (!searchBtn.isFocused){
+            searchBtn.visibility = View.GONE
+            filterBtn.visibility = View.VISIBLE
+            isClosed = true
+        }else{
+            searchBtn.visibility = View.VISIBLE
+            filterBtn.visibility = View.GONE
+            isClosed = false
+        }
+
+        return isClosed
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,6 +201,11 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         postAdapter = UserPostAdapter(this)
         initPostRecyclerview()
         observeResponse()
+
+        homeSwipeToRefreshLayout.setOnRefreshListener {
+            homeSwipeToRefreshLayout.isRefreshing = false
+            observeResponse()
+        }
     }
 
     override fun onPostClicked(position: Int) {

@@ -17,7 +17,7 @@ import com.example.week_ten_task.ui.HomeFragment
 class UserPostAdapter(private val postClick: OnPostClickListener) : RecyclerView.Adapter<UserPostAdapter.PostViewHolder>() {
 
     companion object{
-        var postList : MutableList<PostResponseItem> = ArrayList()
+        var postList : MutableList<PostResponseItem> = mutableListOf()
     }
 
 

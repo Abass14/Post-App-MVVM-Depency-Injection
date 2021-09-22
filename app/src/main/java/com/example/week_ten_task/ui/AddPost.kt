@@ -1,6 +1,7 @@
 package com.example.week_ten_task.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,7 +47,7 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
         postAdapter = UserPostAdapter(this)
 
         closeBtn.setOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().navigate(R.id.action_addPost_to_homeFragment)
         }
 
         submitPostBtn.setOnClickListener {
@@ -61,6 +62,7 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
             Toast.makeText(requireContext(), "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }else{
             observeAddPostResponse(postResponseItem)
+            Log.d("AddedPost", "$postResponseItem")
             this.findNavController().navigate(R.id.action_addPost_to_homeFragment)
         }
     }

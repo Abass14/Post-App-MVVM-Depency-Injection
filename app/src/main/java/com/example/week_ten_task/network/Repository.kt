@@ -40,7 +40,7 @@ class Repository @Inject constructor(
         val response = api.getPost()
 
         if (response.isSuccessful){
-//            dao.deletePosts()
+            dao.deletePosts()
             for (i in response.body()!!){
                 insertPosts(i)
             }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
@@ -26,6 +27,7 @@ class AddComment : Fragment() {
     lateinit var email: EditText
     lateinit var submitCommentBtn: AppCompatButton
     lateinit var comment: AppCompatEditText
+    lateinit var closeAddComment: ImageButton
     private val argg : AddCommentArgs by navArgs()
     lateinit var postData: PostResponseItem
     private var postId: Int? = null
@@ -39,6 +41,11 @@ class AddComment : Fragment() {
         email = view.findViewById(R.id.tvEmailComment)
         comment = view.findViewById(R.id.inputCommentTxt)
         submitCommentBtn = view.findViewById(R.id.submitCommentBtn)
+        closeAddComment = view.findViewById(R.id.closeAddComment)
+
+        closeAddComment.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         return view
     }
