@@ -13,25 +13,28 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.week_ten_task.R
-import com.example.week_ten_task.adapter.CommentAdapter
 import com.example.week_ten_task.adapter.UserPostAdapter
 import com.example.week_ten_task.model.PostResponseItem
-import com.example.week_ten_task.util.UiFunctions
 import com.example.week_ten_task.vm.AppViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
 
+    //Initializing variables
     private lateinit var closeBtn: ImageButton
     private lateinit var submitPostBtn: AppCompatButton
     private lateinit var titleTxt: EditText
     private lateinit var postTxt: AppCompatEditText
     lateinit var postResponseItem: PostResponseItem
     lateinit var postAdapter: UserPostAdapter
+    lateinit var postList: Array<PostResponseItem>
 
-    private val viewmodel: AppViewModel by viewModels()
+    //initializing argument and viewModel by delegate
+    private val args: AddPostArgs by navArgs()
+    private val viewModel: AppViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,29 +49,39 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
         postTxt = view.findViewById(R.id.inputPostTxt)
         postAdapter = UserPostAdapter(this)
 
+        //setting click listener on close button
         closeBtn.setOnClickListener {
             findNavController().navigate(R.id.action_addPost_to_homeFragment)
         }
 
+        //click listener on submitPost button
         submitPostBtn.setOnClickListener {
             createPost()
         }
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Receiving arguments from Home Fragment
+        postList = args.postList
+    }
+
+    //Function to add new Post
     private fun createPost(){
-        postResponseItem = PostResponseItem(1,UserPostAdapter.postList.size, titleTxt.text.toString(), postTxt.text.toString())
+        postResponseItem = PostResponseItem(1,postList.size + 1, titleTxt.text.toString(), postTxt.text.toString())
         if (titleTxt.text.isEmpty() || postTxt.text?.isEmpty()!!){
             Toast.makeText(requireContext(), "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }else{
-            observeAddPostResponse(postResponseItem)
+            viewModel.insertPost(postResponseItem)
             Log.d("AddedPost", "$postResponseItem")
             this.findNavController().navigate(R.id.action_addPost_to_homeFragment)
         }
     }
 
     private fun observeAddPostResponse(postResponseItem: PostResponseItem){
-        viewmodel.addPost(postResponseItem)
+        viewModel.addPost(postResponseItem)
     }
 
     companion object{

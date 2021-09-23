@@ -1,7 +1,7 @@
 package com.example.week_ten_task.di
 
 import android.content.Context
-import com.example.week_ten_task.db.AppDao
+import com.example.week_ten_task.db.PostDao
 import com.example.week_ten_task.db.AppDatabase
 import com.example.week_ten_task.db.CommentDao
 import com.example.week_ten_task.network.Repository
@@ -24,7 +24,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDao(appDatabase: AppDatabase) : AppDao = appDatabase.getAppDao()
+    fun provideAppDao(appDatabase: AppDatabase) : PostDao = appDatabase.getPostDao()
 
     @Provides
     @Singleton
@@ -36,5 +36,5 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(api: RetroService, dao: AppDao, commentDao: CommentDao) : Repository = Repository(api, dao, commentDao)
+    fun provideRepository(api: RetroService, dao: PostDao, commentDao: CommentDao) : Repository = Repository(api, dao, commentDao)
 }

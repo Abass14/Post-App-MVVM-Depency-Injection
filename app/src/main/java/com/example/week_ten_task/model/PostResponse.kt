@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Post Response Entity
+ */
 class PostResponse : ArrayList<PostResponseItem>()
 
 @Parcelize

@@ -14,11 +14,12 @@ import com.example.week_ten_task.R
 import com.example.week_ten_task.model.PostResponseItem
 import com.example.week_ten_task.ui.HomeFragment
 
+/**
+ * RecyclerView Adapter for Post entity
+ */
 class UserPostAdapter(private val postClick: OnPostClickListener) : RecyclerView.Adapter<UserPostAdapter.PostViewHolder>() {
 
-    companion object{
-        var postList : MutableList<PostResponseItem> = mutableListOf()
-    }
+    var postList : MutableList<PostResponseItem> = mutableListOf()
 
 
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view){

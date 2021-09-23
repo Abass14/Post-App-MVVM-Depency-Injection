@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.week_ten_task.R
 import com.example.week_ten_task.model.UserMomentModel
 
-class UserMomentAdapter(val momentsList: ArrayList<UserMomentModel>) : RecyclerView.Adapter<UserMomentAdapter.MyViewHolder>() {
+/**
+ * RecyclerView Adapter for static Moments
+ */
+class UserMomentAdapter(private val momentsList: ArrayList<UserMomentModel>) : RecyclerView.Adapter<UserMomentAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val momentImage = view.findViewById<ImageView>(R.id.moments)

@@ -9,6 +9,9 @@ import com.example.week_ten_task.R
 import com.example.week_ten_task.model.CommentsResponseItem
 import org.w3c.dom.Text
 
+/**
+ * RecyclerView Adapter for comment entity
+ */
 class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
     var commentList: MutableList<CommentsResponseItem> = ArrayList()
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {

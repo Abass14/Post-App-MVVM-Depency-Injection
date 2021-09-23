@@ -4,6 +4,7 @@ import com.example.week_ten_task.model.CommentsResponse
 import com.example.week_ten_task.model.CommentsResponseItem
 import com.example.week_ten_task.model.PostResponse
 import com.example.week_ten_task.model.PostResponseItem
+import com.example.week_ten_task.util.COMMENTS
 import com.example.week_ten_task.util.COMMENT_EP
 import com.example.week_ten_task.util.POST_EP
 import com.example.week_ten_task.util.SINGLE_POST
@@ -18,6 +19,10 @@ interface RetroService {
 
     @GET(POST_EP)
     suspend fun getPost() : Response<PostResponse>
+
+    @GET(COMMENTS)
+    suspend fun getAllComments() : Response<CommentsResponse>
+
 
     @GET(COMMENT_EP)
     suspend fun getComments(@Path("post_id") postId: Int) : Response<CommentsResponse>

@@ -12,10 +12,18 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_addPost2"
-            app:destination="@id/addPost" />
+            app:destination="@id/addPost"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_postPage"
-            app:destination="@id/postPage" />
+            app:destination="@id/postPage"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/addPost"
@@ -24,7 +32,13 @@
         tools:layout="@layout/fragment_add_post" >
         <action
             android:id="@+id/action_addPost_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument android:name="postList"
+            app:argType="com.example.week_ten_task.model.PostResponseItem[]" />
     </fragment>
     <fragment
         android:id="@+id/postPage"
@@ -33,10 +47,18 @@
         tools:layout="@layout/fragment_post_page" >
         <action
             android:id="@+id/action_postPage_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/action_postPage_to_addComment"
-            app:destination="@id/addComment" />
+            app:destination="@id/addComment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <argument
             android:name="postData"
             app:argType="com.example.week_ten_task.model.PostResponseItem"
@@ -57,7 +79,11 @@
         tools:layout="@layout/fragment_add_comment">
         <action
             android:id="@+id/action_addComment_to_postPage"
-            app:destination="@id/postPage" />
+            app:destination="@id/postPage"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <argument
             android:name="postIdd"
             app:argType="integer"
@@ -66,5 +92,8 @@
             android:name="postPassed"
             app:argType="com.example.week_ten_task.model.PostResponseItem"
             app:nullable="true" />
+        <argument
+            android:name="commentList"
+            app:argType="com.example.week_ten_task.model.CommentsResponseItem[]" />
     </fragment>
 </navigation>

@@ -7,6 +7,9 @@ import android.net.Network
 import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 
+/**
+ * Connectivity live data class implementing connectivity manager
+ */
 class ConnectivityLiveData(private val connectivityManager: ConnectivityManager)
     : LiveData<Boolean>() {
 

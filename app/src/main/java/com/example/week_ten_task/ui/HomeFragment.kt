@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
 
+    //late initializing variables
     private lateinit var toolbar: Toolbar
     private lateinit var addPostBtn: ImageButton
     lateinit var momentList: ArrayList<UserMomentModel>
@@ -48,6 +49,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        //Initializing
         toolbar = view.findViewById(R.id.toolbarMain)
         addPostBtn = view.findViewById(R.id.addPostBtn)
         momentsRecyclerView = view.findViewById(R.id.momentsViewPager)
@@ -74,7 +76,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         searchBtn.setOnCloseListener {
             searchViewOpenClose()
         }
-
+        //Overriding onBack press to finish activity and exit app
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 requireActivity().finishAffinity()
@@ -82,7 +84,9 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
             }
         }
 
+
         requireActivity().onBackPressedDispatcher.addCallback(callback)
+        //Setting on query text listener to search view
         searchBtn.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 searchBtn.clearFocus()
@@ -100,15 +104,18 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
 
         } )
 
+        //setting click listener to addPost float button
         addPostBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addPost2)
+            val action =  HomeFragmentDirections.actionHomeFragmentToAddPost2(postAdapter.postList.toTypedArray())
+            findNavController().navigate(action)
         }
         return view
     }
 
+    //Method to filter through post
     @SuppressLint("NotifyDataSetChanged")
     fun search(searchTxt: String) {
-        UserPostAdapter.postList =  UserPostAdapter.postList.filter {
+        postAdapter.postList =  postAdapter.postList.filter {
             it.theTitle.contains(searchTxt, ignoreCase = false)
         } as ArrayList<PostResponseItem>
 
@@ -116,7 +123,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
 
     }
 
-
+    //setting post recyclerView adapter and layout manager
     private fun initPostRecyclerview(){
         postRecyclerView.apply {
             adapter = postAdapter
@@ -124,6 +131,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         }
     }
 
+    //setting moment recyclerView adapter and layout manager
     private fun initMomentRecyclerView(){
         momentsRecyclerView.apply {
             adapter = UserMomentAdapter(momentList)
@@ -131,6 +139,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         }
     }
 
+    //Data for moment list array
     private fun momentList(){
         momentList = arrayListOf(
             UserMomentModel(R.drawable.ic_image_one_round, "Abass"),
@@ -143,15 +152,16 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         )
     }
 
+    //Method to observe database live data and connectivity to make network request
     @SuppressLint("NotifyDataSetChanged")
     private fun observeResponse(){
         viewModel.getPostList().observe(requireActivity(), Observer {
             homeProgressBar.visibility = View.GONE
             if (it != null){
-                UserPostAdapter.postList = it
+                postAdapter.postList = it
                 postAdapter.notifyDataSetChanged()
                 homeProgressBar.visibility = View.GONE
-                Log.d("HomeFragment", "${UserPostAdapter.postList.size}")
+                Log.d("HomeFragment", "${postAdapter.postList.size}")
             }else{
                 errorTxt.text = getString(R.string.error)
                 errorTxt.visibility = View.VISIBLE
@@ -209,7 +219,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
     }
 
     override fun onPostClicked(position: Int) {
-        val action = HomeFragmentDirections.actionHomeFragmentToPostPage(UserPostAdapter.postList[position], null)
+        val action = HomeFragmentDirections.actionHomeFragmentToPostPage(postAdapter.postList[position], null)
         findNavController().navigate(action)
         Log.d("RecClicked", "This View is clicked")
     }

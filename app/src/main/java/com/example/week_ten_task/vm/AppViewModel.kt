@@ -18,9 +18,15 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
 
     fun getPostList() : LiveData<MutableList<PostResponseItem>> = repository.getAllPosts()
 
+    fun getAllCommentList() : LiveData<MutableList<CommentsResponseItem>> = repository.getAllCommentsFromDb()
+
     fun getSinglePost() : LiveData<PostResponseItem> = repository.getSinglePostLiveData
 
     fun getCommentList(postId: Int) : LiveData<MutableList<CommentsResponseItem>> = repository.getComments(postId)
+
+    fun  insertPost(postResponseItem: PostResponseItem){
+        repository.insertPostToDatabase(postResponseItem)
+    }
 
     fun getPostFromApi(context: Context){
         viewModelScope.launch {
@@ -41,6 +47,14 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
         }
     }
 
+    fun getAllCommentFromApi(){
+        viewModelScope.launch {
+            try {
+                repository.getAllCommentsFromApi()
+            }catch (e: Exception){}
+        }
+    }
+
     fun addPost(postResponseItem: PostResponseItem){
         viewModelScope.launch {
             try {
@@ -49,6 +63,9 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
         }
     }
 
+    fun insertComment(commentsResponseItem: CommentsResponseItem){
+        repository.insertCommentToDatabase(commentsResponseItem)
+    }
     fun addComment(commentsResponseItem: CommentsResponseItem, postId: Int){
         viewModelScope.launch {
             try {
