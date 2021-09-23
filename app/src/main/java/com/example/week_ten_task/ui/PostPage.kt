@@ -26,6 +26,7 @@ import com.example.week_ten_task.model.CommentsResponseItem
 import com.example.week_ten_task.model.PostResponseItem
 import com.example.week_ten_task.vm.AppViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -69,18 +70,15 @@ class PostPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Checking if recieved arguments isn't null and using arg to trigger network call to fetch comments and single post
+        //Checking if received arguments isn't null and using arg to trigger network call to fetch comments and single post
             if (args.postData != null){
                 postData = args.postData!!
                 thePostTitle.text = postData.theTitle
                 postId = postData.id
                 thePostBody.text = postData.theBody
 
-
                 initRecyclerView()
-
                 insertAllComments()
-
 
                 if (postId != null) {
                     observeCommentLiveData(postId!!)
@@ -133,7 +131,7 @@ class PostPage : Fragment() {
         }
     }
 
-    fun bindPostViews(postResponseItem: PostResponseItem){
+    private fun bindPostViews(postResponseItem: PostResponseItem){
         thePostTitle.text = postResponseItem.theTitle
         thePostBody.text = postResponseItem.theBody
     }
@@ -144,18 +142,20 @@ class PostPage : Fragment() {
             if (it != null){
                 commentAdapter.commentList = it
                 commentAdapter.notifyDataSetChanged()
-
             }
         })
     }
 
-    fun insertAllComments(){
+    private fun insertAllComments(){
         viewModel.getAllCommentList().observe(requireActivity(), Observer {
             if (it != null){
                 commList = it
             }
         })
-        viewModel.getAllCommentFromApi()
+        lifecycleScope.launch {
+            viewModel.getAllCommentFromApi()
+        }
+
     }
 
     private fun observeSinglePost(postId: Int){

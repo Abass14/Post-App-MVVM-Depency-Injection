@@ -15,8 +15,8 @@ import com.example.week_ten_task.model.UserMomentModel
 class UserMomentAdapter(private val momentsList: ArrayList<UserMomentModel>) : RecyclerView.Adapter<UserMomentAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val momentImage = view.findViewById<ImageView>(R.id.moments)
-        val name = view.findViewById<TextView>(R.id.profile_name)
+        private val momentImage: ImageView = view.findViewById(R.id.moments)
+        val name: TextView = view.findViewById(R.id.profile_name)
 
         fun bind(userMomentModel: UserMomentModel){
             val imageId = userMomentModel.image

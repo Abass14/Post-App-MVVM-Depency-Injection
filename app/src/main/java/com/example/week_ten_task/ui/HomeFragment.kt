@@ -40,6 +40,7 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
     lateinit var homeProgressBar: ProgressBar
     lateinit var connectivityLiveData: ConnectivityLiveData
     lateinit var errorTxt: TextView
+    lateinit var sortedPostList: MutableList<PostResponseItem>
 
     private val viewModel: AppViewModel by viewModels()
 
@@ -158,10 +159,10 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         viewModel.getPostList().observe(requireActivity(), Observer {
             homeProgressBar.visibility = View.GONE
             if (it != null){
-                postAdapter.postList = it
+                sortedPostList = it
+                postAdapter.postList = sortedPostList
                 postAdapter.notifyDataSetChanged()
                 homeProgressBar.visibility = View.GONE
-                Log.d("HomeFragment", "${postAdapter.postList.size}")
             }else{
                 errorTxt.text = getString(R.string.error)
                 errorTxt.visibility = View.VISIBLE
@@ -206,9 +207,11 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
         return isClosed
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postAdapter = UserPostAdapter(this)
+        sortedPostList = mutableListOf()
         initPostRecyclerview()
         observeResponse()
 
@@ -221,7 +224,6 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
     override fun onPostClicked(position: Int) {
         val action = HomeFragmentDirections.actionHomeFragmentToPostPage(postAdapter.postList[position], null)
         findNavController().navigate(action)
-        Log.d("RecClicked", "This View is clicked")
     }
 
 }

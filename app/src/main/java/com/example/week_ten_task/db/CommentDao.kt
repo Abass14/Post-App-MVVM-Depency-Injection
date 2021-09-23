@@ -1,10 +1,7 @@
 package com.example.week_ten_task.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.week_ten_task.model.CommentsResponseItem
 import com.example.week_ten_task.model.PostResponseItem
 
@@ -20,8 +17,9 @@ interface CommentDao {
     @Query("SELECT * FROM comment_table")
     fun getComments() : LiveData<MutableList<CommentsResponseItem>>
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertComment(commentsResponseItem: CommentsResponseItem)
+    suspend fun insertComment(commentsResponseItem: CommentsResponseItem)
 
     @Query("DELETE FROM comment_table")
     fun deleteComments()

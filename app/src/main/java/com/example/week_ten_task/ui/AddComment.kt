@@ -83,11 +83,7 @@ class AddComment : Fragment() {
         if (title.text.isEmpty() || email.text.isEmpty() || comment.text?.isEmpty()!!){
             Toast.makeText(requireContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show()
         }else{
-            doAsync {
-                uiThread {
-                    viewModel.insertComment(commentsResponseItem)
-                }
-            }
+            viewModel.insertComment(commentsResponseItem)
             val action = AddCommentDirections.actionAddCommentToPostPage(postData, postData)
             findNavController().navigate(action)
         }

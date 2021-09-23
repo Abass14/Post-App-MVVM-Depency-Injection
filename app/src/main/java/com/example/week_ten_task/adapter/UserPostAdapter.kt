@@ -1,18 +1,13 @@
 package com.example.week_ten_task.adapter
 
-import android.app.Activity
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.week_ten_task.R
 import com.example.week_ten_task.model.PostResponseItem
-import com.example.week_ten_task.ui.HomeFragment
 
 /**
  * RecyclerView Adapter for Post entity
@@ -24,9 +19,9 @@ class UserPostAdapter(private val postClick: OnPostClickListener) : RecyclerView
 
     inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
-        var title = view.findViewById<TextView>(R.id.postTitle)
-        var post = view.findViewById<TextView>(R.id.postBody)
-        var postCardView = view.findViewById<CardView>(R.id.postCardView)
+        var title: TextView = view.findViewById(R.id.postTitle)
+        var post: TextView = view.findViewById(R.id.postBody)
+        var postCardView: CardView = view.findViewById(R.id.postCardView)
 
         fun bind(postResponseItem: PostResponseItem){
             title.text = postResponseItem.theTitle

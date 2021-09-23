@@ -24,7 +24,7 @@ class Repository @Inject constructor(
     }
 
     //Method uses the injected getPostDao function to insert posts to post_table
-    private fun insertPosts(postResponseItem: PostResponseItem){
+    private suspend fun insertPosts(postResponseItem: PostResponseItem){
         dao.insertPost(postResponseItem)
     }
 
@@ -34,7 +34,7 @@ class Repository @Inject constructor(
     }
 
     //Method uses the injected getCommentDao function to insert comments to comment_table
-    private fun insertComments(commentsResponseItem: CommentsResponseItem){
+    private suspend fun insertComments(commentsResponseItem: CommentsResponseItem){
         commentDao.insertComment(commentsResponseItem)
     }
 
@@ -91,7 +91,7 @@ class Repository @Inject constructor(
     }
 
     //Method to insert to database
-    fun insertPostToDatabase(postResponseItem: PostResponseItem){
+    suspend fun insertPostToDatabase(postResponseItem: PostResponseItem){
         insertPosts(postResponseItem)
     }
 
@@ -109,7 +109,7 @@ class Repository @Inject constructor(
     }
 
     //Method to insert comment to database
-    fun insertCommentToDatabase(commentsResponseItem: CommentsResponseItem){
+    suspend fun insertCommentToDatabase(commentsResponseItem: CommentsResponseItem){
         insertComments(commentsResponseItem)
     }
 

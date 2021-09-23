@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.week_ten_task.model.CommentsResponseItem
 import com.example.week_ten_task.model.PostResponse
@@ -22,10 +23,16 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
 
     fun getSinglePost() : LiveData<PostResponseItem> = repository.getSinglePostLiveData
 
-    fun getCommentList(postId: Int) : LiveData<MutableList<CommentsResponseItem>> = repository.getComments(postId)
+    fun getCommentList(postId: Int) : LiveData<MutableList<CommentsResponseItem>> {
+        return repository.getComments(postId)
+    }
 
     fun  insertPost(postResponseItem: PostResponseItem){
-        repository.insertPostToDatabase(postResponseItem)
+        viewModelScope.launch {
+            try {
+                repository.insertPostToDatabase(postResponseItem)
+            }catch (e: Exception){}
+        }
     }
 
     fun getPostFromApi(context: Context){
@@ -64,7 +71,9 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
     }
 
     fun insertComment(commentsResponseItem: CommentsResponseItem){
-        repository.insertCommentToDatabase(commentsResponseItem)
+        viewModelScope.launch {
+            repository.insertCommentToDatabase(commentsResponseItem)
+        }
     }
     fun addComment(commentsResponseItem: CommentsResponseItem, postId: Int){
         viewModelScope.launch {

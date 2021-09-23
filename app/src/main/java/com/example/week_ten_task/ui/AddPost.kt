@@ -21,7 +21,7 @@ import com.example.week_ten_task.vm.AppViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
+class AddPost : Fragment() {
 
     //Initializing variables
     private lateinit var closeBtn: ImageButton
@@ -29,7 +29,6 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
     private lateinit var titleTxt: EditText
     private lateinit var postTxt: AppCompatEditText
     lateinit var postResponseItem: PostResponseItem
-    lateinit var postAdapter: UserPostAdapter
     lateinit var postList: Array<PostResponseItem>
 
     //initializing argument and viewModel by delegate
@@ -47,7 +46,6 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
         submitPostBtn = view.findViewById(R.id.submitPostBtn)
         titleTxt = view.findViewById(R.id.tvTitle)
         postTxt = view.findViewById(R.id.inputPostTxt)
-        postAdapter = UserPostAdapter(this)
 
         //setting click listener on close button
         closeBtn.setOnClickListener {
@@ -74,22 +72,14 @@ class AddPost : Fragment(), UserPostAdapter.OnPostClickListener {
         if (titleTxt.text.isEmpty() || postTxt.text?.isEmpty()!!){
             Toast.makeText(requireContext(), "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }else{
-            viewModel.insertPost(postResponseItem)
+            viewModel. insertPost(postResponseItem)
             Log.d("AddedPost", "$postResponseItem")
             this.findNavController().navigate(R.id.action_addPost_to_homeFragment)
         }
     }
 
-    private fun observeAddPostResponse(postResponseItem: PostResponseItem){
-        viewModel.addPost(postResponseItem)
-    }
-
     companion object{
         fun instance() = AddPost()
-    }
-
-    override fun onPostClicked(position: Int) {
-        TODO("Not yet implemented")
     }
 
 }

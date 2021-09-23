@@ -18,7 +18,7 @@ interface PostDao {
     fun getAllPosts() : LiveData<MutableList<PostResponseItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPost(postResponseItem: PostResponseItem)
+    suspend fun insertPost(postResponseItem: PostResponseItem)
 
     @Query("DELETE FROM post_table")
     fun deletePosts()

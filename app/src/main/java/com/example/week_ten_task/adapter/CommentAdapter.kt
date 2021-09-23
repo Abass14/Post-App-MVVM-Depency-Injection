@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.week_ten_task.R
 import com.example.week_ten_task.model.CommentsResponseItem
-import org.w3c.dom.Text
 
 /**
  * RecyclerView Adapter for comment entity
