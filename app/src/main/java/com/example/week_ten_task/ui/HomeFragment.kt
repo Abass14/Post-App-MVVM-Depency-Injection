@@ -84,9 +84,8 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
                 requireActivity().finish()
             }
         }
-
-
         requireActivity().onBackPressedDispatcher.addCallback(callback)
+
         //Setting on query text listener to search view
         searchBtn.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -169,7 +168,6 @@ class HomeFragment : Fragment(), UserPostAdapter.OnPostClickListener {
                 homeProgressBar.visibility = View.GONE
             }
         })
-        //viewModel.getPostFromApi(requireContext())
 
         connectivityLiveData.observe(viewLifecycleOwner, Observer {  isAvailable ->
             homeProgressBar.visibility = View.GONE

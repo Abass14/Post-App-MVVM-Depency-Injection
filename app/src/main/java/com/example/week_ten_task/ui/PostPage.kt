@@ -105,7 +105,6 @@ class PostPage : Fragment() {
                     observeCommentLiveData(postId!!)
                 }
 
-
                 commentBtn_post.setOnClickListener {
                     val actions = PostPageDirections.actionPostPageToAddComment(postData,
                         commList.toTypedArray()
@@ -113,9 +112,6 @@ class PostPage : Fragment() {
                     findNavController().navigate(actions)
                 }
             }
-
-
-
     }
 
     companion object{
